@@ -34,22 +34,30 @@
         .password-container {
             margin-top: 10px;
         }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <h1>武将名を検索してください</h1>
+    <h1>武将名を検索してください（ひらがなで入力）</h1>
     <input type="text" id="inputWord" placeholder="武将名を入力してください">
     <button onclick="searchBusyo()">検索</button>
     <div id="output"></div>
 
     <script>
         // 武将名とスキルのリスト
-        const list_busyo = ["シン", "ケイシャ", "カンキ"];
+        const list_busyo = ["おうせん", "ちょうとう", "けいしゃ", "しん"];
         const list_skill = [
-            `スキル１猛将一閃【黄亀】/戦技<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>侵攻時には、味方全武将の攻撃力が10%上昇（3ターン）する。`,
-            `スキル１疾風の突撃【赤影】/戦技<br>敵陣全体に120%のダメージを与え、味方全武将の移動速度が10%上昇（2ターン）。`,
-            `スキル１略奪の鬼【黒鉄】/戦技<br>敵陣全体に180%のダメージを与える。<br>敵武将1名を撃破するたびに味方全武将の攻撃力が20%上昇（2ターン）。`
+            `スキル1 猛将一閃【赤虎】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`, // 省略
+            `スキル1 猛将一閃【紫牛】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`, // 省略
+            `スキル1 重追撃【緑羊】〈戦技〉<br>残り体力が最も低い敵武将1名に150%のダメージを与える。<br>...`, // 省略
+            `スキル1 猛将一閃【黄亀】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`  // 省略
         ];
+
+        const PASSWORD = "盟主大好き"; // パスワードを設定
 
         // あいまい検索機能
         function searchBusyo() {
@@ -73,7 +81,7 @@
                     skillDiv.classList.add("skill-content");
                     skillDiv.innerHTML = list_skill[index];
 
-                    // パスワード入力
+                    // パスワード入力フォーム
                     busyoDiv.addEventListener("click", () => {
                         const passwordDiv = document.createElement("div");
                         passwordDiv.classList.add("password-container");
@@ -81,12 +89,21 @@
                             <p>パスワードを入力してください:</p>
                             <input type="password" id="passwordInput" placeholder="パスワード">
                             <button id="submitPassword">送信</button>
+                            <div id="errorMessage" class="error-message"></div>
                         `;
 
-                        // 「送信」ボタンのイベント
-                        passwordDiv.querySelector("#submitPassword").addEventListener("click", () => {
-                            passwordDiv.remove(); // パスワード入力フォームを削除
-                            skillDiv.style.display = "block"; // スキルを表示
+                        const submitButton = passwordDiv.querySelector("#submitPassword");
+                        const passwordInput = passwordDiv.querySelector("#passwordInput");
+                        const errorMessage = passwordDiv.querySelector("#errorMessage");
+
+                        // パスワード送信ボタンのイベント
+                        submitButton.addEventListener("click", () => {
+                            if (passwordInput.value === PASSWORD) {
+                                passwordDiv.remove(); // パスワード入力フォームを削除
+                                skillDiv.style.display = "block"; // スキルを表示
+                            } else {
+                                errorMessage.textContent = "パスワードが違います。";
+                            }
                         });
 
                         // 出力エリアに追加
