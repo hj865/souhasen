@@ -175,12 +175,17 @@
                     skillDiv.innerHTML = busyo.skill;
 
                     busyoDiv.addEventListener("click", () => {
-                        const password = normalizePassword(prompt("パスワードを入力してください:"));
-                        if (password === "1111") {
+                        if (!skillDiv.hasAttribute("unlocked")) {
+                            const password = normalizePassword(prompt("パスワードを入力してください:"));
+                            if (password === "1111") {
+                                skillDiv.setAttribute("unlocked", "true");
+                                skillDiv.style.display = "block";
+                            } else {
+                                alert("パスワードが違います。");
+                            }
+                        } else {
                             skillDiv.style.display =
                                 skillDiv.style.display === "none" ? "block" : "none";
-                        } else {
-                            alert("パスワードが違います。");
                         }
                     });
 
