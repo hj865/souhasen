@@ -28,7 +28,7 @@
         #output, #skillSearchResults {
             margin-top: 20px;
         }
-        .busyo-item {
+        .busyo-item, .skill-item {
             cursor: pointer;
             margin: 10px 0;
             font-size: 1.2em;
@@ -111,6 +111,7 @@
         function filterByCountry(country) {
             currentCountry = country;
             searchBusyo();
+            searchSkill();
         }
 
         function searchBusyo() {
@@ -132,25 +133,22 @@
                     const skillDiv = document.createElement("div");
                     skillDiv.classList.add("skill-content");
 
-                    busyo.skills.forEach((skill) => {
+                    busyo.skills.forEach((skill, index) => {
                         const skillLine = document.createElement("div");
-                        skillLine.innerHTML = skill;
-                        skillDiv.appendChild(skillLine);
-                    });
-
-                    busyoDiv.addEventListener("click", () => {
-                        if (!skillDiv.hasAttribute("unlocked")) {
-                            const password = normalizePassword(prompt("パスワードを入力してください:"));
-                            if (password === "1111") {
-                                skillDiv.setAttribute("unlocked", "true");
-                                skillDiv.style.display = "block";
-                            } else {
-                                alert("パスワードが違います。");
+                        skillLine.innerHTML = `<b>スキル${index + 1}</b>`;
+                        skillLine.classList.add("skill-item");
+                        skillLine.addEventListener("click", () => {
+                            if (!skillLine.hasAttribute("unlocked")) {
+                                const password = normalizePassword(prompt("パスワードを入力してください:"));
+                                if (password === "1111") {
+                                    skillLine.setAttribute("unlocked", "true");
+                                    skillLine.innerHTML += `<br>${skill}`;
+                                } else {
+                                    alert("パスワードが違います。");
+                                }
                             }
-                        } else {
-                            skillDiv.style.display =
-                                skillDiv.style.display === "none" ? "block" : "none";
-                        }
+                        });
+                        skillDiv.appendChild(skillLine);
                     });
 
                     outputDiv.appendChild(busyoDiv);
@@ -171,20 +169,31 @@
             let found = false;
 
             list_busyo.forEach((busyo) => {
-                busyo.skills.forEach((skill, index) => {
-                    if (skill.includes(keyword)) {
-                        found = true;
+                if (currentCountry === "全て" || busyo.country === currentCountry) {
+                    busyo.skills.forEach((skill, index) => {
+                        if (skill.includes(keyword)) {
+                            found = true;
 
-                        const resultDiv = document.createElement("div");
-                        resultDiv.innerHTML = `
-                            <b>${busyo.name} (${busyo.country})</b> - スキル${index + 1}:<br>
-                            ${skill}
-                        `;
-                        resultDiv.style.marginBottom = "20px";
-
-                        skillResultsDiv.appendChild(resultDiv);
-                    }
-                });
+                            const resultDiv = document.createElement("div");
+                            resultDiv.innerHTML = `
+                                <b>${busyo.name} (${busyo.country})</b> - スキル${index + 1}
+                            `;
+                            resultDiv.classList.add("skill-item");
+                            resultDiv.addEventListener("click", () => {
+                                if (!resultDiv.hasAttribute("unlocked")) {
+                                    const password = normalizePassword(prompt("パスワードを入力してください:"));
+                                    if (password === "1111") {
+                                        resultDiv.setAttribute("unlocked", "true");
+                                        resultDiv.innerHTML += `<br>${skill}`;
+                                    } else {
+                                        alert("パスワードが違います。");
+                                    }
+                                }
+                            });
+                            skillResultsDiv.appendChild(resultDiv);
+                        }
+                    });
+                }
             });
 
             if (!found) {
