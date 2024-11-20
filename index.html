@@ -52,6 +52,10 @@
             font-size: 1em;
             cursor: pointer;
         }
+        .highlight {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -71,33 +75,32 @@
     </div>
 
     <script>
-        // 武将名、国、スキルのリスト
         const list_busyo = [
             {
                 name: "おうせん",
                 country: "秦国",
                 skills: [
-                    "<b>スキル1 猛将一閃【赤虎】〈戦技〉</b><br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>敵騎兵武将の攻撃力を20%低下(3ターン)させる。<br>駐屯時には、自身の防御力が20%上昇(3ターン)する。",
-                    "<b>スキル2 深謀の用兵術〈戦技〉</b><br>自身と味方盾兵武将の攻撃力が20%上昇(3ターン)する。<br>駐屯時には、味方盾兵武将に「挑発」状態(3ターン)と60%のガード効果(2回)を付与する。<br>攻撃力が最も高い敵武将1名に170%のダメージを与える。",
-                    "<b>スキル3 必勝の籠城〈軍略〉</b><br>敵騎兵武将のクリティカル発生率を20%低下させる。<br>駐屯時には、自身と味方盾兵武将の防御力貫通が30%上昇し、<br>城門の体力が残存時、城門の体力を50000回復する。"
+                    "スキル1 猛将一閃【赤虎】〈戦技〉: 攻撃力が最も高い敵武将1名に150%のダメージを与える。敵騎兵武将の攻撃力を20%低下(3ターン)。",
+                    "スキル2 深謀の用兵術〈戦技〉: 自身と味方盾兵武将の攻撃力が20%上昇(3ターン)。",
+                    "スキル3 必勝の籠城〈軍略〉: 敵騎兵武将のクリティカル発生率を20%低下。"
                 ]
             },
             {
                 name: "しん",
                 country: "秦国",
                 skills: [
-                    "<b>スキル1 猛将一閃【黄亀】〈戦技〉</b><br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>侵攻時には、味方全武将の攻撃力が10%上昇（3ターン）する。",
-                    "<b>スキル2 飛信隊の剣〈軍略〉</b><br>自身以外の味方秦国武将1名につき、味方秦国武将の攻撃力が5%上昇する。<br>自身以外の味方飛信隊武将1名につき、味方飛信隊武将の攻撃力が5%上昇する。",
-                    "<b>スキル3 受け継ぐ意思〈戦技〉</b><br>攻撃力が最も高い敵武将1名に160%のダメージを与える。<br>自身以外の味方武将の攻撃回数1回につき、味方歩兵武将と騎兵武将の攻撃力が3%上昇（3ターン）する（最大25%）。"
+                    "スキル1 猛将一閃【黄亀】〈戦技〉: 攻撃力が最も高い敵武将1名に150%のダメージを与える。",
+                    "スキル2 飛信隊の剣〈軍略〉: 自身以外の味方秦国武将1名につき、味方秦国武将の攻撃力が5%上昇。",
+                    "スキル3 受け継ぐ意思〈戦技〉: 攻撃力が最も高い敵武将1名に160%のダメージを与える。"
                 ]
             },
             {
                 name: "けいしゃ",
                 country: "趙国",
                 skills: [
-                    "<b>スキル1 重追撃【緑羊】〈戦技〉</b><br>残り体力が最も低い敵武将1名に150%のダメージを与える。<br>敵騎兵武将の攻撃力を20%低下(3ターン)させる。<br>駐屯時には、70%の確率で攻撃力が最も高い敵武将1名に「錯乱」状態(3ターン)を付与する。",
-                    "<b>スキル2 狩人の本領〈軍略〉</b><br>自身と味方弓兵武将の防御力貫通が20%上昇する。<br>自身と味方趙国武将のクリティカルダメージが20%上昇する。<br>駐屯時には、自身が敵武将から狙われにくくなる。",
-                    "<b>スキル3 狩り取る糸〈戦技〉</b><br>防御力が最も高い敵盾兵武将1名に「挑発」状態(4ターン)を付与する。<br>防御力が最も高い敵武将1名に180%のダメージを与える。<br>駐屯時には、自身と味方弓兵武将に攻撃無効(1回)を付与し、<br>城門の体力が残存時、城門の体力を100000回復する。"
+                    "スキル1 重追撃【緑羊】〈戦技〉: 残り体力が最も低い敵武将1名に150%のダメージを与える。",
+                    "スキル2 狩人の本領〈軍略〉: 自身と味方弓兵武将の防御力貫通が20%上昇。",
+                    "スキル3 狩り取る糸〈戦技〉: 防御力が最も高い敵盾兵武将1名に挑発(4ターン)。"
                 ]
             }
         ];
@@ -132,23 +135,21 @@
 
                     const skillDiv = document.createElement("div");
                     skillDiv.classList.add("skill-content");
+                    skillDiv.innerHTML = busyo.skills.join("<br><br>");
 
-                    busyo.skills.forEach((skill, index) => {
-                        const skillLine = document.createElement("div");
-                        skillLine.innerHTML = `<b>スキル${index + 1}</b>`;
-                        skillLine.classList.add("skill-item");
-                        skillLine.addEventListener("click", () => {
-                            if (!skillLine.hasAttribute("unlocked")) {
-                                const password = normalizePassword(prompt("パスワードを入力してください:"));
-                                if (password === "1111") {
-                                    skillLine.setAttribute("unlocked", "true");
-                                    skillLine.innerHTML += `<br>${skill}`;
-                                } else {
-                                    alert("パスワードが違います。");
-                                }
+                    busyoDiv.addEventListener("click", () => {
+                        if (!skillDiv.hasAttribute("unlocked")) {
+                            const password = normalizePassword(prompt("パスワードを入力してください:"));
+                            if (password === "1111") {
+                                skillDiv.setAttribute("unlocked", "true");
+                                skillDiv.style.display = "block";
+                            } else {
+                                alert("パスワードが違います。");
                             }
-                        });
-                        skillDiv.appendChild(skillLine);
+                        } else {
+                            skillDiv.style.display =
+                                skillDiv.style.display === "none" ? "block" : "none";
+                        }
                     });
 
                     outputDiv.appendChild(busyoDiv);
@@ -175,21 +176,28 @@
                             found = true;
 
                             const resultDiv = document.createElement("div");
-                            resultDiv.innerHTML = `
-                                <b>${busyo.name} (${busyo.country})</b> - スキル${index + 1}
-                            `;
                             resultDiv.classList.add("skill-item");
+                            resultDiv.textContent = `${busyo.name} (${busyo.country}) - スキル${index + 1}`;
+
                             resultDiv.addEventListener("click", () => {
                                 if (!resultDiv.hasAttribute("unlocked")) {
                                     const password = normalizePassword(prompt("パスワードを入力してください:"));
                                     if (password === "1111") {
                                         resultDiv.setAttribute("unlocked", "true");
-                                        resultDiv.innerHTML += `<br>${skill}`;
+                                        const highlightedSkill = skill.replace(
+                                            new RegExp(keyword, "gi"),
+                                            (match) => `<span class="highlight">${match}</span>`
+                                        );
+                                        resultDiv.innerHTML = `
+                                            <b>${busyo.name} (${busyo.country})</b> - スキル${index + 1}:<br>
+                                            ${highlightedSkill}
+                                        `;
                                     } else {
                                         alert("パスワードが違います。");
                                     }
                                 }
                             });
+
                             skillResultsDiv.appendChild(resultDiv);
                         }
                     });
