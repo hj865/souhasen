@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入力に応じた出力</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>特定の言葉に対応する出力</h1>
+    <input type="text" id="inputWord" placeholder="言葉を入力してください">
+    <button onclick="showOutput()">出力</button>
+    <div id="output"></div>
+
+    <script>
+        // キーと出力のマッピング
+        const wordMap = {
+            "ゴウタン": "後々更新します",
+            "シュキ": "後々更新します",
+            "マキ": "後々更新します"
+        };
+
+        function showOutput() {
+            const input = document.getElementById("inputWord").value;
+            const output = wordMap[input] || "対応する言葉が見つかりません。";
+            document.getElementById("output").textContent = output;
+        }
+    </script>
+</body>
+</html>
