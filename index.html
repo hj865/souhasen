@@ -31,7 +31,7 @@
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-        .confirmation {
+        .password-container {
             margin-top: 10px;
         }
     </style>
@@ -73,37 +73,24 @@
                     skillDiv.classList.add("skill-content");
                     skillDiv.innerHTML = list_skill[index];
 
-                    // 確認のカウンター
-                    let confirmCount = 0;
-
-                    // クリックイベント
+                    // パスワード入力
                     busyoDiv.addEventListener("click", () => {
-                        if (confirmCount < 5) {
-                            const confirmationDiv = document.createElement("div");
-                            confirmationDiv.classList.add("confirmation");
-                            confirmationDiv.innerHTML = `
-                                <p>本当に知りたいですか？</p>
-                                <button class="yes-button">はい</button>
-                                <button class="no-button">いいえ</button>
-                            `;
+                        const passwordDiv = document.createElement("div");
+                        passwordDiv.classList.add("password-container");
+                        passwordDiv.innerHTML = `
+                            <p>パスワードを入力してください:</p>
+                            <input type="password" id="passwordInput" placeholder="パスワード">
+                            <button id="submitPassword">送信</button>
+                        `;
 
-                            // 「はい」ボタン
-                            confirmationDiv.querySelector(".yes-button").addEventListener("click", () => {
-                                confirmCount++;
-                                confirmationDiv.remove();
+                        // 「送信」ボタンのイベント
+                        passwordDiv.querySelector("#submitPassword").addEventListener("click", () => {
+                            passwordDiv.remove(); // パスワード入力フォームを削除
+                            skillDiv.style.display = "block"; // スキルを表示
+                        });
 
-                                if (confirmCount === 5) {
-                                    skillDiv.style.display = "block";
-                                }
-                            });
-
-                            // 「いいえ」ボタン
-                            confirmationDiv.querySelector(".no-button").addEventListener("click", () => {
-                                confirmationDiv.remove();
-                            });
-
-                            outputDiv.appendChild(confirmationDiv);
-                        }
+                        // 出力エリアに追加
+                        outputDiv.appendChild(passwordDiv);
                     });
 
                     // 検索結果に追加
