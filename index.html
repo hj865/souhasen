@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>争覇スキル</title>
+    <title>争覇スキル検索</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,28 +15,54 @@
             font-size: 1.2em;
             color: blue;
         }
+        .result {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
-    <h1>武将名をカタカナで入力してください</h1>
-    <input type="text" id="inputWord" placeholder="言葉を入力してください">
-    <button onclick="showOutput()">出力</button>
+    <h1>武将名を検索してください</h1>
+    <input type="text" id="inputWord" placeholder="武将名を入力してください">
+    <button onclick="searchBusyo()">検索</button>
     <div id="output"></div>
 
     <script>
-        // キーと出力のマッピング
-        const wordMap = {
-            "シン": "スキル１猛将一閃【黄亀〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。侵攻時には、味方全武将の攻撃力が10%上昇（3ターン）する。<br><br>スキル２飛信隊の剣〈軍略〉<br>自身以外の味方秦国武将1名につき、味方秦国武将の攻撃力が5%上昇する。自身以外の味方飛信隊武将1名につき、味方飛信隊武将の攻撃力が5%上昇する。<br><br>スキル３受け継ぐ意思〈戦技〉<br>攻撃力が最も高い敵武将1名に160%のダメージを与える。自身以外の味方武将の攻撃回数1回につき、味方歩兵武将と騎兵武将の攻撃力が3%上昇（3ターン）する（最大25%）。",
-            "ケイシャ": "スキル1重追撃【緑羊】〈戦技〉<br>残り体力が最も低い敵武将1名に150%のダメージを与える。敵騎兵武将の攻撃力を20%低下(3ターン)させる。駐屯時には、70%の確率で攻撃力が最も高い敵武将1名に「錯乱」状態(3ターン)を付与する。<br><br>スキル2狩人の本領〈軍略〉<br>自身と味方弓兵武将の防御力貫通が20%上昇する。自身と味方趙国武将のクリティカルダメージが20%上昇する。駐屯時には、自身が敵武将から狙われにくくなる。<br><br>スキル3狩り取る糸〈戦技〉<br>防御力が最も高い敵盾兵武将1名に「挑発」状態(4ターン)を付与する。防御力が最も高い敵武将1名に180%のダメージを与える。駐屯時には、自身と味方弓兵武将に攻撃無効(1回)を付与し、城門の体力が残存時、城門の体力を100000回復する。<br><br>争覇追想狩人の嗅覚<br>自身の体力上限が100%上昇する。味方弓兵武将のクリティカル発生率が25%上昇する。味方弓兵武将の錯乱状態の付与催率が30%上昇する。敵盾兵武将か生存している場合、味方ら兵武将に60%のガード効果（3回）を付与する。",
-            "カンキ": "ーーーー",
-            "ライド": "ーーーー"
-        };
+        // 武将名とスキルのリスト
+        const list_busyo = ["シン", "ケイシャ", "カンキ"];
+        const list_skill = [
+            `スキル１猛将一閃【黄亀】/戦技<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>侵攻時には、味方全武将の攻撃力が10%上昇（3ターン）する。`,
+            `スキル１疾風の突撃【赤影】/戦技<br>敵陣全体に120%のダメージを与え、味方全武将の移動速度が10%上昇（2ターン）。`,
+            `スキル１略奪の鬼【黒鉄】/戦技<br>敵陣全体に180%のダメージを与える。<br>敵武将1名を撃破するたびに味方全武将の攻撃力が20%上昇（2ターン）。`
+        ];
 
-        function showOutput() {
+        // あいまい検索機能
+        function searchBusyo() {
             const input = document.getElementById("inputWord").value;
-            const output = wordMap[input] || "対応する言葉が見つかりません。";
-            // innerHTMLを使うことでHTMLタグが解釈されます
-            document.getElementById("output").innerHTML = output;
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = ""; // 検索結果をリセット
+
+            let found = false;
+
+            // リスト内で部分一致をチェック
+            for (let i = 0; i < list_busyo.length; i++) {
+                if (list_busyo[i].includes(input)) {
+                    found = true;
+                    const resultDiv = document.createElement("div");
+                    resultDiv.classList.add("result");
+                    resultDiv.innerHTML = `<strong>武将名:</strong> ${list_busyo[i]}<br><strong>スキル:</strong> ${list_skill[i]}`;
+                    outputDiv.appendChild(resultDiv);
+                }
+            }
+
+            // 見つからなかった場合のメッセージ
+            if (!found) {
+                outputDiv.innerHTML = "該当する武将が見つかりません。";
+            }
         }
     </script>
 </body>
