@@ -21,29 +21,6 @@
             text-decoration: underline;
         }
         .skill-content {
-            display: <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>争覇スキル検索</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        #output {
-            margin-top: 20px;
-        }
-        .busyo-item {
-            cursor: pointer;
-            margin: 10px 0;
-            font-size: 1.2em;
-            color: blue;
-            text-decoration: underline;
-        }
-        .skill-content {
             display: none;
             margin-top: 10px;
             font-size: 1em;
@@ -74,10 +51,10 @@
         // 武将名とスキルのリスト
         const list_busyo = ["おうせん", "ちょうとう", "けいしゃ", "しん"];
         const list_skill = [
-            `スキル1 猛将一閃【赤虎】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`, // 省略
-            `スキル1 猛将一閃【紫牛】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`, // 省略
-            `スキル1 重追撃【緑羊】〈戦技〉<br>残り体力が最も低い敵武将1名に150%のダメージを与える。<br>...`, // 省略
-            `スキル1 猛将一閃【黄亀】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`  // 省略
+            `スキル1 猛将一閃【赤虎】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。`,
+            `スキル1 猛将一閃【紫牛】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。`,
+            `スキル1 重追撃【緑羊】〈戦技〉<br>残り体力が最も低い敵武将1名に150%のダメージを与える。`,
+            `スキル1 猛将一閃【黄亀】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。`
         ];
 
         const PASSWORD = "1111"; // パスワードを「1111」に設定
@@ -110,116 +87,14 @@
                         passwordDiv.classList.add("password-container");
                         passwordDiv.innerHTML = `
                             <p>パスワードを入力してください:</p>
-                            <input type="password" id="passwordInput" placeholder="パスワード">
-                            <button id="submitPassword">送信</button>
-                            <div id="errorMessage" class="error-message"></div>
+                            <input type="password" placeholder="パスワード">
+                            <button>送信</button>
+                            <div class="error-message"></div>
                         `;
 
-                        const submitButton = passwordDiv.querySelector("#submitPassword");
-                        const passwordInput = passwordDiv.querySelector("#passwordInput");
-                        const errorMessage = passwordDiv.querySelector("#errorMessage");
-
-                        // パスワード送信ボタンのイベント
-                        submitButton.addEventListener("click", () => {
-                            if (passwordInput.value === PASSWORD) {
-                                passwordDiv.remove(); // パスワード入力フォームを削除
-                                skillDiv.style.display = "block"; // スキルを表示
-                            } else {
-                                errorMessage.textContent = "パスワードが違います。";
-                            }
-                        });
-
-                        // 出力エリアに追加
-                        outputDiv.appendChild(passwordDiv);
-                    });
-
-                    // 検索結果に追加
-                    outputDiv.appendChild(busyoDiv);
-                    outputDiv.appendChild(skillDiv);
-                }
-            });
-
-            if (!found) {
-                outputDiv.innerHTML = "該当する武将が見つかりません。";
-            }
-        }
-    </script>
-</body>
-</html>
-none;
-            margin-top: 10px;
-            font-size: 1em;
-            color: black;
-            text-align: left;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .password-container {
-            margin-top: 10px;
-        }
-        .error-message {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-    </style>
-</head>
-<body>
-    <h1>武将名を検索してください（ひらがなで入力）</h1>
-    <input type="text" id="inputWord" placeholder="武将名を入力してください">
-    <button onclick="searchBusyo()">検索</button>
-    <div id="output"></div>
-
-    <script>
-        // 武将名とスキルのリスト
-        const list_busyo = ["おうせん", "ちょうとう", "けいしゃ", "しん"];
-        const list_skill = [
-            `スキル1 猛将一閃【赤虎】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`, // 省略
-            `スキル1 猛将一閃【紫牛】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`, // 省略
-            `スキル1 重追撃【緑羊】〈戦技〉<br>残り体力が最も低い敵武将1名に150%のダメージを与える。<br>...`, // 省略
-            `スキル1 猛将一閃【黄亀】〈戦技〉<br>攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>...`  // 省略
-        ];
-
-        const PASSWORD = "盟主大好き"; // パスワードを設定
-
-        // あいまい検索機能
-        function searchBusyo() {
-            const input = document.getElementById("inputWord").value;
-            const outputDiv = document.getElementById("output");
-            outputDiv.innerHTML = ""; // 検索結果をリセット
-
-            let found = false;
-
-            list_busyo.forEach((busyo, index) => {
-                if (busyo.includes(input)) {
-                    found = true;
-
-                    // 武将名アイテム
-                    const busyoDiv = document.createElement("div");
-                    busyoDiv.classList.add("busyo-item");
-                    busyoDiv.textContent = busyo;
-
-                    // スキル内容アイテム
-                    const skillDiv = document.createElement("div");
-                    skillDiv.classList.add("skill-content");
-                    skillDiv.innerHTML = list_skill[index];
-
-                    // パスワード入力フォーム
-                    busyoDiv.addEventListener("click", () => {
-                        const passwordDiv = document.createElement("div");
-                        passwordDiv.classList.add("password-container");
-                        passwordDiv.innerHTML = `
-                            <p>パスワードを入力してください:</p>
-                            <input type="password" id="passwordInput" placeholder="パスワード">
-                            <button id="submitPassword">送信</button>
-                            <div id="errorMessage" class="error-message"></div>
-                        `;
-
-                        const submitButton = passwordDiv.querySelector("#submitPassword");
-                        const passwordInput = passwordDiv.querySelector("#passwordInput");
-                        const errorMessage = passwordDiv.querySelector("#errorMessage");
+                        const submitButton = passwordDiv.querySelector("button");
+                        const passwordInput = passwordDiv.querySelector("input");
+                        const errorMessage = passwordDiv.querySelector(".error-message");
 
                         // パスワード送信ボタンのイベント
                         submitButton.addEventListener("click", () => {
