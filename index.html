@@ -31,14 +31,6 @@
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-        .password-container {
-            margin-top: 10px;
-        }
-        .error-message {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
     </style>
 </head>
 <body>
@@ -101,6 +93,10 @@
 
         const PASSWORD = "1111"; // パスワードを設定
 
+        function normalizeInput(input) {
+            return input.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
+        }
+
         function searchBusyo() {
             const input = document.getElementById("inputWord").value.trim();
             const outputDiv = document.getElementById("output");
@@ -122,9 +118,10 @@
 
                     busyoDiv.addEventListener("click", () => {
                         const password = prompt("パスワードを入力してください:");
-                        if (password === PASSWORD) {
-                            skillDiv.style.display =
-                                skillDiv.style.display === "none" ? "block" : "none";
+                        const normalizedPassword = normalizeInput(password);
+
+                        if (normalizedPassword === PASSWORD) {
+                            skillDiv.style.display = "block"; // スキルを表示
                         } else {
                             alert("パスワードが違います。");
                         }
