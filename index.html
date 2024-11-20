@@ -137,4 +137,62 @@
                     防御力が最も高い敵盾兵武将1名に「挑発」状態(4ターン)を付与する。<br>
                     防御力が最も高い敵武将1名に180%のダメージを与える。<br>
                     駐屯時には、自身と味方弓兵武将に攻撃無効(1回)を付与し、<br>
-                    城門の体力が残存時、
+                    城門の体力が残存時、城門の体力を100000回復する。
+                `
+            }
+        ];
+
+        let currentCountry = "全て";
+
+        // 全角・半角変換
+        function normalizePassword(input) {
+            return input.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
+        }
+
+        function filterByCountry(country) {
+            currentCountry = country;
+            searchBusyo();
+        }
+
+        function searchBusyo() {
+            const input = document.getElementById("inputWord").value.trim();
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = "";
+
+            let found = false;
+
+            list_busyo.forEach((busyo) => {
+                if ((currentCountry === "全て" || busyo.country === currentCountry) &&
+                    busyo.name.includes(input)) {
+                    found = true;
+
+                    const busyoDiv = document.createElement("div");
+                    busyoDiv.classList.add("busyo-item");
+                    busyoDiv.textContent = `${busyo.name} (${busyo.country})`;
+
+                    const skillDiv = document.createElement("div");
+                    skillDiv.classList.add("skill-content");
+                    skillDiv.innerHTML = busyo.skill;
+
+                    busyoDiv.addEventListener("click", () => {
+                        const password = normalizePassword(prompt("パスワードを入力してください:"));
+                        if (password === "1111") {
+                            skillDiv.style.display =
+                                skillDiv.style.display === "none" ? "block" : "none";
+                        } else {
+                            alert("パスワードが違います。");
+                        }
+                    });
+
+                    outputDiv.appendChild(busyoDiv);
+                    outputDiv.appendChild(skillDiv);
+                }
+            });
+
+            if (!found) {
+                outputDiv.textContent = "該当する武将が見つかりません。";
+            }
+        }
+    </script>
+</body>
+</html>
