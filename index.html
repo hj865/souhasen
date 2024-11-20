@@ -25,7 +25,7 @@
             font-size: 1.5em;
             margin-bottom: 20px;
         }
-        #output {
+        #output, #skillSearchResults {
             margin-top: 20px;
         }
         .busyo-item {
@@ -65,6 +65,9 @@
         <h1>武将名を検索してください（ひらがなで入力）</h1>
         <input type="text" id="inputWord" placeholder="武将名を入力してください" oninput="searchBusyo()">
         <div id="output"></div>
+        <h2>スキル内容で検索</h2>
+        <input type="text" id="skillWord" placeholder="スキルのキーワードを入力してください" oninput="searchSkill()">
+        <div id="skillSearchResults"></div>
     </div>
 
     <script>
@@ -104,24 +107,6 @@
                 `
             },
             {
-                name: "ちょうとう",
-                country: "秦国",
-                skill: `
-                    <b>スキル1 猛将一閃【紫牛】〈戦技〉</b><br>
-                    攻撃力が最も高い敵武将1名に150%のダメージを与える。<br>
-                    自身が「挑発」状態(3ターン)になる。<br>
-                    駐屯時には、自身の防御力が20%上昇(3ターン)する。<br><br>
-                    <b>スキル2 武将の力〈戦技〉</b><br>
-                    攻撃力が最も高い敵武将1名に170%のダメージを与える。<br>
-                    味方秦国武将1名につき、自身の防御力が10%上昇(4ターン)する。<br>
-                    駐屯時には、自身に10%の体力継続回復(3ターン)を付与する。<br><br>
-                    <b>スキル3 老将の底力〈軍略〉</b><br>
-                    自身への挑発を除いた状態異常(デバフ)を無効化(3回)する。<br>
-                    駐屯時には、自身に60%のガード効果(3回)を付与し、<br>
-                    城門の体力残存時、城門の体力を20000回復する。
-                `
-            },
-            {
                 name: "けいしゃ",
                 country: "趙国",
                 skill: `
@@ -144,7 +129,6 @@
 
         let currentCountry = "全て";
 
-        // 全角・半角変換
         function normalizePassword(input) {
             return input.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
         }
@@ -196,6 +180,33 @@
 
             if (!found) {
                 outputDiv.textContent = "該当する武将が見つかりません。";
+            }
+        }
+
+        function searchSkill() {
+            const keyword = document.getElementById("skillWord").value.trim();
+            const skillResultsDiv = document.getElementById("skillSearchResults");
+            skillResultsDiv.innerHTML = "";
+
+            let found = false;
+
+            list_busyo.forEach((busyo) => {
+                if (busyo.skill.includes(keyword)) {
+                    found = true;
+
+                    const resultDiv = document.createElement("div");
+                    resultDiv.innerHTML = `
+                        <b>${busyo.name}</b> (${busyo.country}) のスキル:<br>
+                        ${busyo.skill}
+                    `;
+                    resultDiv.style.marginBottom = "20px";
+
+                    skillResultsDiv.appendChild(resultDiv);
+                }
+            });
+
+            if (!found) {
+                skillResultsDiv.textContent = "該当するスキルが見つかりません。";
             }
         }
     </script>
