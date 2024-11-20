@@ -10,7 +10,7 @@
             text-align: center;
             padding: 20px;
         }
-        #busyoList {
+        #output {
             margin-top: 20px;
         }
         .busyo-item {
@@ -34,8 +34,10 @@
     </style>
 </head>
 <body>
-    <h1>武将リスト</h1>
-    <div id="busyoList"></div>
+    <h1>武将名を検索してください</h1>
+    <input type="text" id="inputWord" placeholder="武将名を入力してください">
+    <button onclick="searchBusyo()">検索</button>
+    <div id="output"></div>
 
     <script>
         // 武将名とスキルのリスト
@@ -46,32 +48,48 @@
             `スキル１略奪の鬼【黒鉄】/戦技<br>敵陣全体に180%のダメージを与える。<br>敵武将1名を撃破するたびに味方全武将の攻撃力が20%上昇（2ターン）。`
         ];
 
-        // 武将名をリスト表示
-        const busyoListDiv = document.getElementById("busyoList");
+        // あいまい検索機能
+        function searchBusyo() {
+            const input = document.getElementById("inputWord").value;
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = ""; // 検索結果をリセット
 
-        list_busyo.forEach((busyo, index) => {
-            // 武将名アイテム
-            const busyoDiv = document.createElement("div");
-            busyoDiv.classList.add("busyo-item");
-            busyoDiv.textContent = busyo;
+            let found = false;
 
-            // スキル内容アイテム
-            const skillDiv = document.createElement("div");
-            skillDiv.classList.add("skill-content");
-            skillDiv.innerHTML = list_skill[index];
+            // リスト内で部分一致をチェック
+            list_busyo.forEach((busyo, index) => {
+                if (busyo.includes(input)) {
+                    found = true;
 
-            // クリックイベントでスキルを表示/非表示
-            busyoDiv.addEventListener("click", () => {
-                skillDiv.style.display =
-                    skillDiv.style.display === "none" || skillDiv.style.display === ""
-                        ? "block"
-                        : "none";
+                    // 武将名アイテム
+                    const busyoDiv = document.createElement("div");
+                    busyoDiv.classList.add("busyo-item");
+                    busyoDiv.textContent = busyo;
+
+                    // スキル内容アイテム
+                    const skillDiv = document.createElement("div");
+                    skillDiv.classList.add("skill-content");
+                    skillDiv.innerHTML = list_skill[index];
+
+                    // クリックイベントでスキルを表示/非表示
+                    busyoDiv.addEventListener("click", () => {
+                        skillDiv.style.display =
+                            skillDiv.style.display === "none" || skillDiv.style.display === ""
+                                ? "block"
+                                : "none";
+                    });
+
+                    // 検索結果に追加
+                    outputDiv.appendChild(busyoDiv);
+                    outputDiv.appendChild(skillDiv);
+                }
             });
 
-            // リストに追加
-            busyoListDiv.appendChild(busyoDiv);
-            busyoListDiv.appendChild(skillDiv);
-        });
+            // 見つからなかった場合のメッセージ
+            if (!found) {
+                outputDiv.innerHTML = "該当する武将が見つかりません。";
+            }
+        }
     </script>
 </body>
 </html>
