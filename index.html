@@ -31,12 +31,16 @@
             border-radius: 5px;
             background-color: #f9f9f9;
         }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <h1>武将名を検索してください（ひらがなで入力）</h1>
-    <input type="text" id="inputWord" placeholder="武将名を入力してください">
-    <button onclick="searchBusyo()">検索</button>
+    <input type="text" id="inputWord" placeholder="武将名を入力してください" oninput="searchBusyo()">
     <div id="output"></div>
 
     <script>
@@ -93,10 +97,6 @@
 
         const PASSWORD = "1111"; // パスワードを設定
 
-        function normalizeInput(input) {
-            return input.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
-        }
-
         function searchBusyo() {
             const input = document.getElementById("inputWord").value.trim();
             const outputDiv = document.getElementById("output");
@@ -118,10 +118,8 @@
 
                     busyoDiv.addEventListener("click", () => {
                         const password = prompt("パスワードを入力してください:");
-                        const normalizedPassword = normalizeInput(password);
-
-                        if (normalizedPassword === PASSWORD) {
-                            skillDiv.style.display = "block"; // スキルを表示
+                        if (password === PASSWORD) {
+                            skillDiv.style.display = skillDiv.style.display === "none" ? "block" : "none";
                         } else {
                             alert("パスワードが違います。");
                         }
@@ -139,3 +137,4 @@
     </script>
 </body>
 </html>
+``
