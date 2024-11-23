@@ -269,11 +269,22 @@
                         if (skill.includes(keyword)) {
                             const resultDiv = document.createElement("div");
                             resultDiv.classList.add("skill-item");
-                            resultDiv.innerHTML = `
-                                ${busyo.name} (${busyo.country}) - スキル${index + 1}:<br>
-                                ${skill.replace(new RegExp(keyword, "gi"), (match) => `<span class="highlight">${match}</span>`)}
-                            `;
+                            resultDiv.textContent = `${busyo.name} - スキル${index + 1}`;
+                            
+                            const skillDiv = document.createElement("div");
+                            skillDiv.classList.add("skill-content");
+                            skillDiv.innerHTML = skill.replace(
+                                new RegExp(keyword, "gi"),
+                                (match) => `<span class="highlight">${match}</span>`
+                            );
+                            skillDiv.style.display = "none";
+
+                            resultDiv.addEventListener("click", () => {
+                                skillDiv.style.display = skillDiv.style.display === "block" ? "none" : "block";
+                            });
+
                             skillResultsDiv.appendChild(resultDiv);
+                            skillResultsDiv.appendChild(skillDiv);
                         }
                     });
                 }
