@@ -263,13 +263,13 @@
                     skillDiv.classList.add("skill-content");
                     skillDiv.innerHTML = busyo.skills.join("<br><br>");
 
-if (!skillDiv.hasAttribute("unlocked")) {
-    skillDiv.setAttribute("unlocked", "true");
-    skillDiv.style.display = "block";
-} else {
-    skillDiv.style.display =
-        skillDiv.style.display === "none" ? "block" : "none";
-}
+                    if (!skillDiv.hasAttribute("unlocked")) {
+                        skillDiv.setAttribute("unlocked", "true");
+                        skillDiv.style.display = "block";
+                    } else {
+                        skillDiv.style.display =
+                            skillDiv.style.display === "none" ? "block" : "none";
+                    }
 
 
                     });
